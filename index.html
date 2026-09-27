@@ -64,5 +64,64 @@
 </style>
 </head>
 <body>
+<header>
+  <h1>⛅ Weather Dashboard</h1>
+  <span>City search, history & live stats</span>
+</header>
+
+<main>
+  <!-- LEFT PANEL -->
+  <section class="card" aria-labelledby="search-title">
+    <h2 id="search-title">Search City</h2>
+    <form id="searchForm">
+      <div>
+        <label for="cityInput">City Name</label>
+        <input type="text" id="cityInput" placeholder="e.g. Tumkur, London, Tokyo" required>
+      </div>
+      <div>
+        <label for="unitSelect">Temperature Unit</label>
+        <select id="unitSelect">
+          <option value="celsius">Celsius (°C)</option>
+          <option value="fahrenheit">Fahrenheit (°F)</option>
+        </select>
+      </div>
+      <button type="submit" id="searchBtn">Search Weather</button>
+      <button type="button" class="secondary" id="clearHistoryBtn">Clear History</button>
+    </form>
+
+    <div style="margin-top:1.5rem">
+      <h2>Search History</h2>
+      <ul id="historyList"></ul>
+      <p id="noHistory" style="color:var(--muted); font-size:0.9rem; display:none;">No history yet.</p>
+    </div>
+  </section>
+
+  <!-- RIGHT PANEL -->
+  <section class="card" aria-labelledby="result-title">
+    <h2 id="result-title">Weather Details</h2>
+
+    <div id="loadingState">⏳ Loading weather data...</div>
+    <div id="errorState"></div>
+
+    <div id="emptyState">
+      <p>🔍 Search a city to see weather details.</p>
+      <p style="font-size:0.9rem; margin-top:0.5rem;">Your searches will be saved automatically.</p>
+    </div>
+
+    <div id="resultSection" style="display:none;">
+      <div class="condition">
+        <div class="temp" id="tempDisplay">--°</div>
+        <div class="desc" id="conditionDisplay">--</div>
+        <div id="cityDisplay" style="font-weight:600; margin-top:0.3rem;"></div>
+      </div>
+      <div class="weather-grid">
+        <div class="stat"><div class="value" id="humidityDisplay">--%</div><div class="label">Humidity</div></div>
+        <div class="stat"><div class="value" id="windDisplay">-- km/h</div><div class="label">Wind Speed</div></div>
+        <div class="stat"><div class="value" id="feelsLikeDisplay">--°</div><div class="label">Feels Like</div></div>
+        <div class="stat"><div class="value" id="timeDisplay">--</div><div class="label">Local Time</div></div>
+      </div>
+    </div>
+  </section>
+</main>
 
 
