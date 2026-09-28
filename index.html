@@ -1,127 +1,1125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weather Dashboard</title>
-<style>
-  :root { --primary:#2563eb; --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#64748b; --error:#ef4444; --success:#22c55e; }
-    * { box-sizing:border-box; margin:0; padding:0; font-family: Inter, system-ui, sans-serif; }
-  body { background:var(--bg); color:var(--text); line-height:1.6; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  /* HEADER - Flexbox */
-  header { display:flex; justify-content:space-between; align-items:center; padding:1.2rem 2rem; background:var(--card); box-shadow:0 1px 3px rgba(0,0,0,0.1); position:sticky; top:0; z-index:10; }
-  header h1 { font-size:1.5rem; color:var(--primary); }
-  header span { color:var(--muted); font-size:0.9rem; }
+    <title>Weather Dashboard</title>
 
-  /* MAIN - Grid */
-  main { max-width:1100px; margin:2rem auto; padding:0 1rem; display:grid; grid-template-columns: 320px 1fr; gap:1.5rem; }
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
- .card { background:var(--card); border-radius:12px; padding:1.5rem; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); }
-  h2 { font-size:1.1rem; margin-bottom:1rem; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00c6ff);
+            min-height: 100vh;
+            padding: 20px;
+            color: #222;
+        }
 
-  /* FORM */
-  form { display:flex; flex-direction:column; gap:0.8rem; }
-  label { font-size:0.85rem; font-weight:600; color:var(--muted); }
-  input, select { padding:0.75rem; border:1px solid #e2e8f0; border-radius:8px; font-size:1rem; outline:none; transition:0.2s; width:100%; }
-  input:focus, select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
-  button { padding:0.75rem 1rem; background:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
-  button:hover { background:#1d4ed8; transform:translateY(-1px); }
-  button:active { transform:translateY(0); }
-  button.secondary { background:#f1f5f9; color:var(--text); }
-  button.secondary:hover { background:#e2e8f0; }
-  button:disabled { opacity:0.6; cursor:not-allowed; }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+        }
 
-  /* WEATHER DISPLAY */
- .weather-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:1rem; margin-top:1rem; }
- .stat { background:#f8fafc; padding:1rem; border-radius:8px; text-align:center; border:1px solid #f1f5f9; }
- .stat.value { font-size:1.6rem; font-weight:700; }
- .stat.label { font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
- .condition { text-align:center; padding:1rem 0; }
- .condition.temp { font-size:3.5rem; font-weight:800; }
- .condition.desc { font-size:1.2rem; color:var(--muted); }
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
 
-  /* STATES */
-  #loadingState { display:none; text-align:center; padding:2rem; color:var(--primary); }
-  #loadingState.active { display:block; }
-  #errorState { display:none; background:#fef2f2; border:1px solid #fecaca; color:var(--error); padding:1rem; border-radius:8px; margin-top:1rem; }
-  #errorState.active { display:block; }
-  #emptyState { text-align:center; padding:3rem 1rem; color:var(--muted); }
- .status-clear { color:var(--success); font-weight:600; }
- .status-cloudy { color:#f59e0b; font-weight:600; }
+        header p {
+            font-size: 16px;
+        }
 
-  /* HISTORY - Semantic list */
-  #historyList { list-style:none; display:flex; flex-direction:column; gap:0.5rem; max-height:400px; overflow:auto; }
-  #historyList li { display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.8rem; background:#f8fafc; border-radius:6px; cursor:pointer; transition:0.2s; }
-  #historyList li:hover { background:#eef2ff; }
+        main {
+            max-width: 1000px;
+            margin: auto;
+        }
 
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    main { grid-template-columns: 1fr; }
-    header { flex-direction:column; gap:0.3rem; text-align:center; }
-   .weather-grid { grid-template-columns: 1fr 1fr; }
-  }
-</style>
+        /* SEARCH */
+
+        .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-form input:focus {
+            border-color: #2196f3;
+        }
+
+        .search-form button {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #1976d2;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-form button:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+        }
+
+        /* STATUS */
+
+        .status {
+            text-align: center;
+            margin-top: 15px;
+            min-height: 22px;
+            font-weight: bold;
+        }
+
+        .loading {
+            color: #1565c0;
+        }
+
+        .success {
+            color: #2e7d32;
+        }
+
+        .error {
+            color: #d32f2f;
+        }
+
+        /* WEATHER CARD */
+
+        .weather-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .weather-card.show {
+            display: block;
+        }
+
+        .weather-header {
+            text-align: center;
+        }
+
+        .weather-header h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .weather-header p {
+            color: #666;
+        }
+
+        .temperature {
+            text-align: center;
+            font-size: 58px;
+            font-weight: bold;
+            color: #1565c0;
+            margin: 20px 0 10px;
+        }
+
+        .condition {
+            text-align: center;
+            font-size: 21px;
+            margin-bottom: 25px;
+        }
+
+        /* DETAILS */
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .detail-box {
+            background: #f3f8fc;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .detail-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .detail-box h3 {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .detail-box p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* HISTORY */
+
+        .history-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-header h2 {
+            font-size: 22px;
+        }
+
+        .clear-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .clear-btn:hover {
+            background: #c62828;
+        }
+
+        #historyList {
+            list-style: none;
+        }
+
+        #historyList li {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #historyList li:hover {
+            background: #e3f2fd;
+            transform: translateX(4px);
+        }
+
+        .empty-history {
+            text-align: center;
+            color: #777;
+            cursor: default !important;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 12px;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form button {
+                width: 100%;
+            }
+
+            .weather-details {
+                grid-template-columns: 1fr;
+            }
+
+            .temperature {
+                font-size: 45px;
+            }
+
+            .history-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .clear-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header>
-  <h1>⛅ Weather Dashboard</h1>
-  <span>City search, history & live stats</span>
-</header>
 
-<main>
-  <!-- LEFT PANEL -->
-  <section class="card" aria-labelledby="search-title">
-    <h2 id="search-title">Search City</h2>
-    <form id="searchForm">
-      <div>
-        <label for="cityInput">City Name</label>
-        <input type="text" id="cityInput" placeholder="e.g. Tumkur, London, Tokyo" required>
-      </div>
-      <div>
-        <label for="unitSelect">Temperature Unit</label>
-        <select id="unitSelect">
-          <option value="celsius">Celsius (°C)</option>
-          <option value="fahrenheit">Fahrenheit (°F)</option>
-        </select>
-      </div>
-      <button type="submit" id="searchBtn">Search Weather</button>
-      <button type="button" class="secondary" id="clearHistoryBtn">Clear History</button>
-    </form>
+    <!-- HEADER -->
 
-    <div style="margin-top:1.5rem">
-      <h2>Search History</h2>
-      <ul id="historyList"></ul>
-      <p id="noHistory" style="color:var(--muted); font-size:0.9rem; display:none;">No history yet.</p>
-    </div>
-  </section>
+    <header>
 
-  <!-- RIGHT PANEL -->
-  <section class="card" aria-labelledby="result-title">
-    <h2 id="result-title">Weather Details</h2>
+        <h1>🌤️ Weather Dashboard</h1>
 
-    <div id="loadingState">⏳ Loading weather data...</div>
-    <div id="errorState"></div>
+        <p>
+            Search a city to view current weather information
+        </p>
 
-    <div id="emptyState">
-      <p>🔍 Search a city to see weather details.</p>
-      <p style="font-size:0.9rem; margin-top:0.5rem;">Your searches will be saved automatically.</p>
-    </div>
-
-    <div id="resultSection" style="display:none;">
-      <div class="condition">
-        <div class="temp" id="tempDisplay">--°</div>
-        <div class="desc" id="conditionDisplay">--</div>
-        <div id="cityDisplay" style="font-weight:600; margin-top:0.3rem;"></div>
-      </div>
-      <div class="weather-grid">
-        <div class="stat"><div class="value" id="humidityDisplay">--%</div><div class="label">Humidity</div></div>
-        <div class="stat"><div class="value" id="windDisplay">-- km/h</div><div class="label">Wind Speed</div></div>
-        <div class="stat"><div class="value" id="feelsLikeDisplay">--°</div><div class="label">Feels Like</div></div>
-        <div class="stat"><div class="value" id="timeDisplay">--</div><div class="label">Local Time</div></div>
-      </div>
-    </div>
-  </section>
-</main>
+    </header>
 
 
+    <main>
+
+        <!-- SEARCH SECTION -->
+
+        <section class="search-section">
+
+            <form id="weatherForm" class="search-form">
+
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Enter city name..."
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit">
+                    🔍 Search
+                </button>
+
+            </form>
+
+            <div id="status" class="status"></div>
+
+        </section>
+
+
+        <!-- WEATHER RESULT -->
+
+        <section id="weatherCard" class="weather-card">
+
+            <div class="weather-header">
+
+                <h2 id="cityName">
+                    City
+                </h2>
+
+                <p id="dateTime">
+                    Date and Time
+                </p>
+
+            </div>
+
+
+            <div id="temperature" class="temperature">
+                --°C
+            </div>
+
+
+            <div id="condition" class="condition">
+                Weather Condition
+            </div>
+
+
+            <div class="weather-details">
+
+                <!-- HUMIDITY -->
+
+                <article class="detail-box">
+
+                    <div class="icon">
+                        💧
+                    </div>
+
+                    <h3>
+                        Humidity
+                    </h3>
+
+                    <p id="humidity">
+                        --%
+                    </p>
+
+                </article>
+
+
+                <!-- WIND -->
+
+                <article class="detail-box">
+
+                    <div class="icon">
+                        💨
+                    </div>
+
+                    <h3>
+                        Wind Speed
+                    </h3>
+
+                    <p id="wind">
+                        -- km/h
+                    </p>
+
+                </article>
+
+
+                <!-- FEELS LIKE -->
+
+                <article class="detail-box">
+
+                    <div class="icon">
+                        🌡️
+                    </div>
+
+                    <h3>
+                        Feels Like
+                    </h3>
+
+                    <p id="feelsLike">
+                        --°C
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- SEARCH HISTORY -->
+
+        <section class="history-section">
+
+            <div class="history-header">
+
+                <h2>
+                    🕘 Search History
+                </h2>
+
+                <button
+                    id="clearHistory"
+                    class="clear-btn"
+                    type="button"
+                >
+                    Clear History
+                </button>
+
+            </div>
+
+
+            <ul id="historyList">
+
+                <li class="empty-history">
+                    No search history yet
+                </li>
+
+            </ul>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            Weather Dashboard | HTML • CSS • JavaScript
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        // ==========================================
+        // GET HTML ELEMENTS
+        // ==========================================
+
+        const weatherForm =
+            document.getElementById("weatherForm");
+
+        const cityInput =
+            document.getElementById("cityInput");
+
+        const status =
+            document.getElementById("status");
+
+        const weatherCard =
+            document.getElementById("weatherCard");
+
+        const cityName =
+            document.getElementById("cityName");
+
+        const dateTime =
+            document.getElementById("dateTime");
+
+        const temperature =
+            document.getElementById("temperature");
+
+        const condition =
+            document.getElementById("condition");
+
+        const humidity =
+            document.getElementById("humidity");
+
+        const wind =
+            document.getElementById("wind");
+
+        const feelsLike =
+            document.getElementById("feelsLike");
+
+        const historyList =
+            document.getElementById("historyList");
+
+        const clearHistory =
+            document.getElementById("clearHistory");
+
+
+        // ==========================================
+        // WEATHER CONDITIONS
+        // ==========================================
+
+        function getWeatherCondition(code) {
+
+            const conditions = {
+
+                0: "☀️ Clear Sky",
+
+                1: "🌤️ Mainly Clear",
+
+                2: "⛅ Partly Cloudy",
+
+                3: "☁️ Overcast",
+
+                45: "🌫️ Fog",
+
+                48: "🌫️ Rime Fog",
+
+                51: "🌦️ Light Drizzle",
+
+                53: "🌦️ Moderate Drizzle",
+
+                55: "🌧️ Dense Drizzle",
+
+                61: "🌧️ Slight Rain",
+
+                63: "🌧️ Moderate Rain",
+
+                65: "🌧️ Heavy Rain",
+
+                71: "🌨️ Slight Snow",
+
+                73: "🌨️ Moderate Snow",
+
+                75: "❄️ Heavy Snow",
+
+                80: "🌦️ Rain Showers",
+
+                81: "🌧️ Moderate Rain Showers",
+
+                82: "⛈️ Heavy Rain Showers",
+
+                95: "⛈️ Thunderstorm",
+
+                96: "⛈️ Thunderstorm with Hail",
+
+                99: "⛈️ Heavy Thunderstorm with Hail"
+
+            };
+
+            return conditions[code] ||
+                   "🌍 Unknown Weather";
+        }
+
+
+        // ==========================================
+        // STATUS MESSAGE
+        // ==========================================
+
+        function showStatus(message, type) {
+
+            status.textContent = message;
+
+            status.className =
+                "status " + type;
+        }
+
+
+        // ==========================================
+        // FIND CITY
+        // ==========================================
+
+        async function getCoordinates(city) {
+
+            /*
+                First search for the city in India.
+                This prevents "Bangalore" from selecting
+                Bangalore Town, Pakistan.
+            */
+
+            let url =
+                "https://geocoding-api.open-meteo.com/v1/search" +
+                "?name=" +
+                encodeURIComponent(city + ", India") +
+                "&count=10" +
+                "&language=en" +
+                "&format=json";
+
+
+            let response =
+                await fetch(url);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to search city."
+                );
+
+            }
+
+
+            let data =
+                await response.json();
+
+
+            // Find Indian city
+
+            if (
+                data.results &&
+                data.results.length > 0
+            ) {
+
+                const indiaResult =
+                    data.results.find(function(place) {
+
+                        return place.country_code === "IN";
+
+                    });
+
+
+                if (indiaResult) {
+
+                    return indiaResult;
+
+                }
+
+            }
+
+
+            /*
+                If Indian city was not found,
+                search worldwide.
+            */
+
+            url =
+                "https://geocoding-api.open-meteo.com/v1/search" +
+                "?name=" +
+                encodeURIComponent(city) +
+                "&count=10" +
+                "&language=en" +
+                "&format=json";
+
+
+            response =
+                await fetch(url);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to search city."
+                );
+
+            }
+
+
+            data =
+                await response.json();
+
+
+            if (
+                !data.results ||
+                data.results.length === 0
+            ) {
+
+                throw new Error(
+                    "City not found. Please enter a valid city."
+                );
+
+            }
+
+
+            /*
+                If an Indian result exists,
+                use it.
+            */
+
+            const indiaResult =
+                data.results.find(function(place) {
+
+                    return place.country_code === "IN";
+
+                });
+
+
+            if (indiaResult) {
+
+                return indiaResult;
+
+            }
+
+
+            // Otherwise use first result
+
+            return data.results[0];
+
+        }
+
+
+        // ==========================================
+        // GET WEATHER
+        // ==========================================
+
+        async function getWeather(
+            latitude,
+            longitude
+        ) {
+
+            const url =
+                "https://api.open-meteo.com/v1/forecast" +
+                "?latitude=" +
+                latitude +
+                "&longitude=" +
+                longitude +
+                "&current=" +
+                "temperature_2m," +
+                "relative_humidity_2m," +
+                "apparent_temperature," +
+                "weather_code," +
+                "wind_speed_10m" +
+                "&timezone=auto";
+
+
+            const response =
+                await fetch(url);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to get weather information."
+                );
+
+            }
+
+
+            return await response.json();
+
+        }
+
+
+        // ==========================================
+        // DISPLAY WEATHER
+        // ==========================================
+
+        function displayWeather(
+            location,
+            weatherData
+        ) {
+
+            const current =
+                weatherData.current;
+
+
+            // City name
+
+            cityName.textContent =
+                location.name +
+                ", " +
+                location.country;
+
+
+            // Temperature
+
+            temperature.textContent =
+                Math.round(
+                    current.temperature_2m
+                ) +
+                "°C";
+
+
+            // Weather condition
+
+            condition.textContent =
+                getWeatherCondition(
+                    current.weather_code
+                );
+
+
+            // Humidity
+
+            humidity.textContent =
+                current.relative_humidity_2m +
+                "%";
+
+
+            // Wind
+
+            wind.textContent =
+                Math.round(
+                    current.wind_speed_10m
+                ) +
+                " km/h";
+
+
+            // Feels like
+
+            feelsLike.textContent =
+                Math.round(
+                    current.apparent_temperature
+                ) +
+                "°C";
+
+
+            // Date and time
+
+            const date =
+                new Date(current.time);
+
+
+            dateTime.textContent =
+                date.toLocaleString();
+
+
+            // Show weather card
+
+            weatherCard.classList.add("show");
+
+
+            showStatus(
+                "Weather loaded successfully!",
+                "success"
+            );
+
+        }
+
+
+        // ==========================================
+        // SEARCH WEATHER
+        // ==========================================
+
+        async function searchWeather(city) {
+
+            try {
+
+                showStatus(
+                    "⏳ Loading weather...",
+                    "loading"
+                );
+
+
+                weatherCard.classList.remove(
+                    "show"
+                );
+
+
+                // Find city
+
+                const location =
+                    await getCoordinates(city);
+
+
+                // Get weather
+
+                const weatherData =
+                    await getWeather(
+                        location.latitude,
+                        location.longitude
+                    );
+
+
+                // Display weather
+
+                displayWeather(
+                    location,
+                    weatherData
+                );
+
+
+                // Save history
+
+                saveToHistory(
+                    location.name
+                );
+
+
+                // Display history
+
+                displayHistory();
+
+            }
+
+            catch (error) {
+
+                weatherCard.classList.remove(
+                    "show"
+                );
+
+
+                showStatus(
+                    "❌ " + error.message,
+                    "error"
+                );
+
+            }
+
+        }
+
+
+        // ==========================================
+        // SEARCH BUTTON
+        // ==========================================
+
+        weatherForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                const city =
+                    cityInput.value.trim();
+
+
+                if (city === "") {
+
+                    showStatus(
+                        "Please enter a city name.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                searchWeather(city);
+
+            }
+        );
+
+
+        // ==========================================
+        // GET SEARCH HISTORY
+        // ==========================================
+
+        function getHistory() {
+
+            const history =
+                localStorage.getItem(
+                    "weatherHistory"
+                );
+
+
+            if (history) {
+
+                return JSON.parse(history);
+
+            }
+
+
+            return [];
+
+        }
+
+
+        // ==========================================
+        // SAVE SEARCH HISTORY
+        // ==========================================
+
+        function saveToHistory(city) {
+
+            let history =
+                getHistory();
+
+
+            // Remove duplicate
+
+            history =
+                history.filter(function(item) {
+
+                    return item.toLowerCase() !==
+                           city.toLowerCase();
+
+                });
+
+
+            // Add new city
+
+            history.unshift(city);
+
+
+            // Keep only 10 cities
+
+            history =
+                history.slice(0, 10);
+
+
+            localStorage.setItem(
+                "weatherHistory",
+                JSON.stringify(history)
+            );
+
+        }
+
+
+        // ==========================================
+        // DISPLAY HISTORY
+        // ==========================================
+
+        function displayHistory() {
+
+            const history =
+                getHistory();
+
+
+            historyList.innerHTML = "";
+
+
+            if (history.length === 0) {
+
+                const empty =
+                    document.createElement("li");
+
+
+                empty.className =
+                    "empty-history";
+
+
+                empty.textContent =
+                    "No search history yet";
+
+
+                historyList.appendChild(
+                    empty
+                );
+
+
+                return;
+
+            }
+
+
+            history.forEach(function(city) {
+
+                const li =
+                    document.createElement("li");
+
+
+                li.textContent =
+                    "📍 " + city;
+
+
+                // Click history city
+
+                li.addEventListener(
+                    "click",
+                    function() {
+
+                        cityInput.value =
+                            city;
+
+                        searchWeather(
+                            city
+                        );
+
+                    }
+                );
+
+
+                historyList.appendChild(
+                    li
+                );
+
+            });
+
+        }
+
+
+        // ==========================================
+        // CLEAR HISTORY
+        // ==========================================
+
+        clearHistory.addEventListener(
+            "click",
+            function() {
+
+                localStorage.removeItem(
+                    "weatherHistory"
+                );
+
+
+                displayHistory();
+
+
+                showStatus(
+                    "Search history cleared.",
+                    "success"
+                );
+
+            }
+        );
+
+
+        // ==========================================
+        // LOAD HISTORY WHEN PAGE OPENS
+        // ==========================================
+
+        displayHistory();
+
+    </script>
+
+</body>
+
+</html>
